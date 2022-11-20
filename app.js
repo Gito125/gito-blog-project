@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const BlogRoutes = require('./routes/blogRoutes')
 const ContactRoutes = require('./routes/contactRoutes')
+const port = process.env.port || 4040
 
 // Middleware for setup
 app.use(morgan('dev'))
@@ -16,7 +17,7 @@ app.use(express.urlencoded({extended: true}))
 const dbURI = 'mongodb://localhost:27017/gito-blogs'
 mongoose.connect(dbURI, err => {
   if (err) console.log(err)
-  app.listen(4040, () => console.log('Connected & Listening'))
+  app.listen(port, () => console.log('Connected & Listening'))
 })
 
 // Routes
