@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  
+  <body>
+    <!-- Navigation-->
+    <%- include('./partials/nav.ejs') %> 
+
+    <!-- Page Header-->
+    <header
+      class="masthead"
+      style="background-image: url('assets/img/create.jpeg')"
+    >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="page-heading">
+              <h1>Create Blog</h1>
+              <span class="subheading">Create and Publish Your Blog</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content-->
+    <main class="mb-4">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <p>Please follow the instructions below.</p>
+            <div class="my-5">
+              <form id="createForm" method="post" action="/blogs" enctype="application/x-www-form-urlencoded">
+                <div class="form-floating">
+                  <input
+                    name="title"
+                    class="form-control"
+                    id="title"
+                    type="text"
+                    placeholder="Blog title..."
+                    data-sb-validations="required"
+                    required
+                  />
+                  <label for="title">Title</label>
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="title:required"
+                  >
+                    A title is required.
+                  </div>
+                </div>
+                
+                <div class="form-floating">
+                  <input
+                    name="subtitle"
+                    class="form-control"
+                    id="subtitle"
+                    type="text"
+                    placeholder="Blog subtitle..."
+                    data-sb-validations="required,subtitle"
+                    required
+                  />
+                  <label for="subtitle">Subtitle</label>
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="subtitle:required"
+                  >
+                    An subtitle is required.
+                  </div>
+                </div>
+
+                <div class="form-floating">
+                  <textarea
+                    name="blogContent"
+                    class="form-control"
+                    id="blogContent"
+                    placeholder="Enter your blogContent here..."
+                    style="height: 12rem"
+                    required
+                    data-sb-validations="required"
+                  ></textarea>
+                  <label for="blogContent">Blog Content</label>
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="name:required"
+                  >
+                    Please type in blog content.
+                  </div>
+                </div>
+
+                <div class="form-floating">
+                  <input
+                    class="form-control"
+                    id="blogerName"
+                    name="blogerName"
+                    type="text"
+                    placeholder="Enter your name..."
+                    data-sb-validations="required"
+                    required
+                  />
+                  <label for="name">Your name please</label>
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="body:required"
+                  >
+                    Come on people have to know who you are. Please type in your name.
+                  </div>
+                </div>
+                <br />
+                
+                <!-- Submit Button-->
+                <button
+                  class="btn btn-primary text-uppercase"
+                  id="submitButton"
+                  type="submit"
+                >
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- Footer JS Code -->
+    <%- include('./partials/footer-js.ejs') %> 
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  
+  <body>
+    <!-- Navigation-->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Page Header-->
+    <header
+      class="masthead"
+      style="background-image: url('assets/img/home-bg.jpg')"
+    >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h1>Gito Blogs</h1>
+              <span class="subheading"
+                >Hi, everyone. Have fun on this blog site.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7 " id="post-container">
+          <% if (blogs.length > 0) { %> 
+            <% for(let i=0; i < blogs.length; i++) { %>
+              <% const blog = blogs[i] %>
+              <% console.log(blog) %> 
+              <!-- Post preview-->
+              <div class="post-preview">
+                <a href="/blogs/<%= blog._id %>">
+                  <h2 class="post-title">
+                    <%= blog.title %>
+                  </h2>
+                  <h3 class="post-subtitle">
+                    <%= blog.subtitle %> 
+                  </h3>
+                </a>
+                <p class="post-meta">
+                  Posted by
+                  <a href="#!"><%= blog.blogerName %> </a>
+                  <%= new Date(blog.createdAt).toLocaleString() %> 
+                </p>
+              </div>
+              <!-- Divider-->
+              <hr class="my-4" />
+            <% } %> 
+          <% } else { %> 
+            <h3 class="post-subtitle">
+              There are no blog posts.
+            </h3>
+          <% } %> 
+
+
+          <!-- Pager--> 
+          <div class="d-flex justify-content-end mb-4">
+            <a class="btn btn-primary text-uppercase" id="togglePostsBtn" href="#!"
+              >Older Posts →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const postContainer = document.getElementById('post-container')
+      const togglePostsBtn = document.getElementById("togglePostsBtn")
+      const togglePostsContainer = togglePostsBtn.parentElement
+      let isReverse = false
+      togglePostsBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        if(togglePostsBtn.innerText === 'OLDER POSTS →') {
+          togglePostsBtn.innerText = 'NEWER POSTS →'
+        } else {
+          togglePostsBtn.innerText = 'OLDER POSTS →'
+        }
+        fetch('/blogs/togglePosts', {
+          method: 'get'
+        })
+        .then(resp => resp.json())
+        .then(result => {
+          // console.log(result)
+          if(!isReverse) {
+            renderPosts(result.reverse())
+            isReverse = true
+          } else {
+            renderPosts(result)
+            isReverse = false
+          }
+        })
+        .catch(err => console.log(err))
+      })
+      const renderPosts = (result) => {
+        postContainer.innerHTML = ''
+        result.forEach(post => {
+          const postPreview = document.createElement('div')
+          const anchor = document.createElement('a')
+          const achor_h2 = document.createElement('h2')
+          const achor_h3 = document.createElement('h2')
+          const paragraph = document.createElement('p')
+          const paragraph_a = document.createElement('a')
+          const postPreviewDivider = document.createElement('hr')
+
+          postPreview.setAttribute('class','post-preview')
+          anchor.setAttribute('href', `/blogs/${post._id}`)
+          achor_h2.setAttribute('class', 'post-title')
+          achor_h3.setAttribute('class', 'post-subtitle')
+          paragraph.setAttribute('class', 'post-meta')
+          // paragraph_a.setAttribute('href', '#')
+          postPreviewDivider.setAttribute('class', 'my-4')
+          achor_h2.innerHTML = post.title
+          achor_h3.innerHTML = post.subtitle
+          paragraph.innerHTML = `Posted by
+            <a href='#!'>${post.blogerName}</a>
+            ${new Date(post.createdAt).toLocaleString()}`
+
+          anchor.appendChild(achor_h2)
+          anchor.appendChild(achor_h3)
+          paragraph.appendChild(paragraph_a)
+          togglePostsContainer.innerHTML = `
+            <a class="btn btn-primary text-uppercase" id="togglePostsBtn" href="#!"
+              >${togglePostsBtn.innerText}
+            </a>`
+
+          postPreview.appendChild(anchor)
+          postPreview.appendChild(paragraph)
+          postContainer.appendChild(postPreview)
+          postContainer.appendChild(postPreviewDivider)
+          postContainer.appendChild(togglePostsBtn)
+          console.log(postPreview)
+
+        })
+      }
+    </script>
+
+    <!-- Footer-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- Footer JS Code -->
+    <%- include('./partials/footer-js.ejs') %> 
+  </body>
+</html>

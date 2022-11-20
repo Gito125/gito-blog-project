@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+
+  <body>
+    <!-- Navigation-->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Page Header-->
+    <header
+      class="masthead"
+      style="background-image: url('assets/img/post-bg.jpg')"
+    >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-heading">
+              <h1><%= blog.title %> </h1>
+              <h2 class="subheading">
+                <%= blog.subtitle %>
+              </h2>
+              <span class="meta">
+                Posted by
+                <a href="#!"><%= blog.blogerName %> </a>
+                <%= new Date(blog.createdAt).toLocaleString() %> 
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Post Content-->
+    <article class="mb-4">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <p><%= blog.body %><p/> 
+            <!-- <p>
+              Never in all their history have men been able truly to conceive of
+              the world as one: a single sphere, a globe, having the qualities
+              of a globe, a round earth in which all the directions eventually
+              meet, in which there is no center because every point, or none, is
+              center — an equal earth which all men occupy as equals. The
+              airman's earth, if free men make it, will be truly round: a globe
+              in practice, not in theory.
+            </p>
+            <p>
+              Science cuts two ways, of course; its products can be used for
+              both good and evil. But there's no turning back from science. The
+              early warnings about technological dangers also come from science.
+            </p>
+            <p>
+              What was most significant about the lunar voyage was not that man
+              set foot on the Moon but that they set eye on the earth.
+            </p> -->
+
+            <!-- Update and Delete Buttons -->
+            <div class="btn-group">
+              <a href="/blogs/<%=blog._id%>/update" class="btn btn-info">Update</a>
+              <a href="/blogs" id="deleteBtn" data-id="<%=blog._id%>" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Script for deleting a blog -->
+    <script>
+      const deleteBtn = document.getElementById('deleteBtn')
+      deleteBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        const _id = deleteBtn.getAttribute('data-id')
+        fetch(`/blogs/${_id}`, {
+          method: 'delete',
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          console.log(data)
+          window.location.href = data.path
+        })
+        .catch(err => console.log(err))
+      })
+
+    </script>
+
+    <!-- Footer-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- Footer JS Code -->
+    <%- include('./partials/footer-js.ejs') %> 
+  </body>
+</html>
